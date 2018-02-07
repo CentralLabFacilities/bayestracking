@@ -74,7 +74,7 @@ else(catkin_FOUND)
 endif(catkin_FOUND)
 
 #add opencv
-find_package(OpenCV 2.4 REQUIRED)
+find_package(OpenCV REQUIRED)
 include_directories(${OpenCV_INCLUDE_DIRS})
 link_directories(${OpenCV_INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME} ${OpenCV_LIBRARIES})

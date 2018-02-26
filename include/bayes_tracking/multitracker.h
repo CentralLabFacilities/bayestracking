@@ -237,7 +237,7 @@ void addFilter(FilterType* filter, observation_t& observation)
                // Assign new tag to filter
                if (j == i) {
                    if (m_observations[i].tag != m_filters[j].tag) {
-                    m_filters[j].tag = m_observations[i].tag;
+                      m_filters[j].tag = m_observations[i].tag;
                    }
                }
           }

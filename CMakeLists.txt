@@ -8,6 +8,11 @@ find_package(catkin QUIET)
 ## Use catkin macros and include dirs
 if(catkin_FOUND)
   message(STATUS "Found catkin")
+
+  find_package(catkin REQUIRED 
+    cv_bridge
+  )
+
   catkin_package(
     INCLUDE_DIRS include 
     LIBRARIES ${PROJECT_NAME}
@@ -50,47 +55,20 @@ if(catkin_FOUND)
   target_link_libraries(${PROJECT_NAME}
     ${catkin_LIBRARIES}
   )
-  set(PACKAGE_LIB_DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION})
-  set(PACKAGE_BIN_DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
-  set(PACKAGE_INCLUDE_DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION})
-else(catkin_FOUND)
-  find_package(Boost 1.54.0 REQUIRED)
-  find_package(OpenCV 2.4 REQUIRED)
-  set(INCLUDE_DIRS_EXTRA ${Boost_INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS})
-  include_directories(${INCLUDE_DIRS_EXTRA})
-  link_directories(${Boost_LIBRARY_DIRS} ${OpenCV_LIBRARY_DIRS})
-  target_link_libraries(${PROJECT_NAME}
-    ${Boost_LIBRARIES}
-    ${OpenCV_LIBRARIES}
+
+  install(TARGETS ${PROJECT_NAME}
+    ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+    LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+    RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
   )
-  set(PACKAGE_LIB_DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
-  set(PACKAGE_BIN_DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
-  set(PACKAGE_INCLUDE_DESTINATION ${CMAKE_INSTALL_PREFIX}/include/${PROJECT_NAME}/)
-  set(PACKAGE_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/include)
-  set(PACKAGE_CONFIG_DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}/)
-  configure_file(bayes_trackingConfig.cmake.in "${PROJECT_BINARY_DIR}/bayes_trackingConfig.cmake" @ONLY)
-  configure_file(bayes_trackingConfigVersion.cmake.in "${PROJECT_BINARY_DIR}/bayes_trackingConfigVersion.cmake" @ONLY)
-  install(FILES "${PROJECT_BINARY_DIR}/bayes_trackingConfig.cmake" "${PROJECT_BINARY_DIR}/bayes_trackingConfigVersion.cmake" 
-    DESTINATION "${PACKAGE_CONFIG_DESTINATION}"
+
+  install(DIRECTORY include/${PROJECT_NAME}/
+    DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+    PATTERN ".svn" EXCLUDE
   )
 endif(catkin_FOUND)
 
-install(TARGETS ${PROJECT_NAME}
-  ARCHIVE DESTINATION ${PACKAGE_LIB_DESTINATION}
-  LIBRARY DESTINATION ${PACKAGE_LIB_DESTINATION}
-  RUNTIME DESTINATION ${PACKAGE_BIN_DESTINATION}
-)
-
-install(DIRECTORY include/${PROJECT_NAME}/
-  DESTINATION ${PACKAGE_INCLUDE_DESTINATION}
-  PATTERN ".svn" EXCLUDE
-)
-
-## Optional builds: examples
-OPTION (BAYESTRACKING_BUILD_EXAMPLES "Generates example programs" ON)
-if(BAYESTRACKING_BUILD_EXAMPLES)
-  add_subdirectory(examples)
-endif(BAYESTRACKING_BUILD_EXAMPLES)
+add_subdirectory(examples)
 
 ## Optional builds: documentation
 OPTION (BAYESTRACKING_BUILD_DOC "Generates API documentation" OFF)

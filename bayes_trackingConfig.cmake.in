@@ -1,7 +1,0 @@
-# - Config file for the bayes_tracking package
-# It defines the following variables
-#  bayes_tracking_INCLUDE_DIRS - include directories for bayes_tracking
-#  bayes_tracking_LIBRARIES    - libraries to link against
- 
-set(bayes_tracking_INCLUDE_DIRS "@PACKAGE_INCLUDE_DIR@" "@INCLUDE_DIRS_EXTRA@")
-set(bayes_tracking_LIBRARIES "@PACKAGE_LIB_DESTINATION@/lib@PROJECT_NAME@.a")

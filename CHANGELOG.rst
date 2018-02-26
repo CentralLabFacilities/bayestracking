@@ -8,6 +8,41 @@ Changelog for package bayes_tracking
 * Changing Licence to GPL
 * Contributors: Christian Dondrup
 
+1.0.8 (2017-06-13)
+------------------
+* added cv_bridge to catkin build (`#18 <https://github.com/LCAS/bayestracking/issues/18>`_)
+* Tracking NN including labels (`#13 <https://github.com/LCAS/bayestracking/issues/13>`_)
+  * Tracking NN including labels
+  without auto formatting
+  * Implimented NN_LABELED
+  Restored default behaviour implimented another association algorithm
+  * Included NN_LABEL in Association Matrix
+  * correct mistyped word
+  * NNJPDA_LABEL implimented
+  * Added seq_size and seq_time
+* Contributors: Marc Hanheide, Peter Lightbody
+
+1.0.7 (2016-07-02)
+------------------
+* Revert "Update on bayestracking" (`#17 <https://github.com/LCAS/bayestracking/issues/17>`_)
+* Contributors: Marc Hanheide
+
+1.0.6 (2016-07-02)
+------------------
+* Update on bayestracking (`#16 <https://github.com/LCAS/bayestracking/issues/16>`_)
+  * Added option to specify minimum number of observations, minimum interval between observations for new track creation and a variance limit for track deletion
+  * Update on mullitracker.h
+  Change the naming "varLimit" -> "stdLimit"
+  * Update simple_2d_tracking.cpp
+  Change naming "varLimit" -> "stdLimit"
+* Merge pull request `#11 <https://github.com/LCAS/bayestracking/issues/11>`_ from pet1330/master
+  Adapted to allow 3D tracking along side 2D
+* removed 3D from simple example
+* removed X_SIZE reference
+* re-implemented 2D functionality to allow merge
+* 3D version
+* Contributors: Christian Dondrup, Peter Lightbody, scosar
+
 1.0.5 (2014-10-29)
 ------------------
 * Merge pull request `#9 <https://github.com/LCAS/bayestracking/issues/9>`_ from LCAS/indigo-fix

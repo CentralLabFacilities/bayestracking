@@ -230,18 +230,17 @@ void addFilter(FilterType* filter, observation_t& observation)
         m_filters[j].filter->predict_observation(om, zp, Zp);
         S = Zp + om.Z;  // H*P*H' + R
         for (int i = 0; i < M; i++) {
-         // Only Check NN_LABELED, NNJPDA_LABELED tag associate not yet implemented
-         // We dont need this in this version. We just want to tunnel the tag
-         // in order to identify the original pose later on.
-         // if (alg == NN_LABELED || NNJPDA_LABELED)
-         // {
-           // Assign maximum cost if observations and trajectories labelled do not match
-           // if (m_observations[i].tag != m_filters[j].tag)
-           // {
-             // amat[i][j] = DBL_MAX;
-             // continue;
-           // }
-         // }
+          // Only Check NN_LABELED, NNJPDA_LABELED tag associate not yet implemented
+          // We dont need this in this version. We just want to tunnel the tag
+          // in order to identify the original pose later on.
+          if (alg == NN_LABELED || NNJPDA_LABELED) {
+               // Assign new tag to filter
+               if (j == i) {
+                   if (m_observations[i].tag != m_filters[j].tag) {
+                    m_filters[j].tag = m_observations[i].tag;
+                   }
+               }
+          }
           s = zp - m_observations[i].vec;
           om.normalise(s, zp);
           try {

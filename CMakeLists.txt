@@ -1,35 +1,33 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(bayes_tracking)
+
 set(CPACK_PACKAGE_NAME "bayes_tracking")
+
 set(VERSION "1.0.3")
 
-## Find catkin macros and libraries if installed
-find_package(catkin QUIET)
-## Use catkin macros and include dirs
-if(catkin_FOUND)
-  message(STATUS "Found catkin")
-  catkin_package(
+find_package(OpenCV REQUIRED)
+include_directories( ${OpenCV_INCLUDE_DIRS} )
+
+find_package(catkin)
+catkin_package(
     INCLUDE_DIRS include 
     LIBRARIES ${PROJECT_NAME}
-  )
-  include_directories(
-    ${catkin_INCLUDE_DIRS}
-  )
-else(catkin_FOUND)
-    message(STATUS "NOT found catkin")
-endif(catkin_FOUND)
+)
+
+include_directories( ${catkin_INCLUDE_DIRS} )
+
 
 ## Headers
 include_directories(
     include
 )
+
 ## Source files
 add_library(${PROJECT_NAME} STATIC 
     src/bayes_tracking/associationmatrix.cpp 
     src/bayes_tracking/ekfilter.cpp 
     src/bayes_tracking/ukfilter.cpp 
     src/bayes_tracking/pfilter.cpp 
-    src/bayes_tracking/trackwin.cpp 
     src/bayes_tracking/models.cpp
     src/bayes_tracking/BayesFilter/bayesFltAlg.cpp
     src/bayes_tracking/BayesFilter/bayesFlt.cpp
@@ -45,35 +43,16 @@ add_library(${PROJECT_NAME} STATIC
     src/bayes_tracking/BayesFilter/unsFlt.cpp
 )
 
-## Link catkin libraries and set install targets
-if(catkin_FOUND)
+
+  
   target_link_libraries(${PROJECT_NAME}
     ${catkin_LIBRARIES}
+    ${OpenCV_LIBS}
   )
   set(PACKAGE_LIB_DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION})
   set(PACKAGE_BIN_DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
   set(PACKAGE_INCLUDE_DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION})
-else(catkin_FOUND)
-  find_package(Boost 1.54.0 REQUIRED)
-  find_package(OpenCV 2.4 REQUIRED)
-  set(INCLUDE_DIRS_EXTRA ${Boost_INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS})
-  include_directories(${INCLUDE_DIRS_EXTRA})
-  link_directories(${Boost_LIBRARY_DIRS} ${OpenCV_LIBRARY_DIRS})
-  target_link_libraries(${PROJECT_NAME}
-    ${Boost_LIBRARIES}
-    ${OpenCV_LIBRARIES}
-  )
-  set(PACKAGE_LIB_DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
-  set(PACKAGE_BIN_DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
-  set(PACKAGE_INCLUDE_DESTINATION ${CMAKE_INSTALL_PREFIX}/include/${PROJECT_NAME}/)
-  set(PACKAGE_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/include)
-  set(PACKAGE_CONFIG_DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}/)
-  configure_file(bayes_trackingConfig.cmake.in "${PROJECT_BINARY_DIR}/bayes_trackingConfig.cmake" @ONLY)
-  configure_file(bayes_trackingConfigVersion.cmake.in "${PROJECT_BINARY_DIR}/bayes_trackingConfigVersion.cmake" @ONLY)
-  install(FILES "${PROJECT_BINARY_DIR}/bayes_trackingConfig.cmake" "${PROJECT_BINARY_DIR}/bayes_trackingConfigVersion.cmake" 
-    DESTINATION "${PACKAGE_CONFIG_DESTINATION}"
-  )
-endif(catkin_FOUND)
+
 
 install(TARGETS ${PROJECT_NAME}
   ARCHIVE DESTINATION ${PACKAGE_LIB_DESTINATION}
@@ -87,7 +66,7 @@ install(DIRECTORY include/${PROJECT_NAME}/
 )
 
 ## Optional builds: examples
-OPTION (BAYESTRACKING_BUILD_EXAMPLES "Generates example programs" ON)
+OPTION (BAYESTRACKING_BUILD_EXAMPLES "Generates example programs" OFF)
 if(BAYESTRACKING_BUILD_EXAMPLES)
   add_subdirectory(examples)
 endif(BAYESTRACKING_BUILD_EXAMPLES)
